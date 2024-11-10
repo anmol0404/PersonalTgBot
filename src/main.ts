@@ -13,9 +13,10 @@ app.use(session());
 
 app.use(stage.middleware());
 app.use(filters.private);
-app.use(commands.reqAIOHandler);
-app.use(commands.postHandler);
+
 app.command("start", commands.startHandler);
+
+app.command("post", commands.postHandler);
 
 app.command("eng", commands.reqAIOHandler);
 

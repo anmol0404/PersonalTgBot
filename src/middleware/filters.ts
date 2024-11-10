@@ -13,7 +13,6 @@ export default {
     console.log(ctx.chat?.id);
     if (ctx.message && "text" in ctx.message && ctx.message.text.startsWith("/post")) {
       next();
-      return;
     } else if (!auth.isAdmin(userId ? userId : 0)) {
       return;
     } else {

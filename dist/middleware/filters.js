@@ -52,7 +52,7 @@ export default {
                         console.log((_b = ctx.chat) === null || _b === void 0 ? void 0 : _b.id);
                         if (!(ctx.message && "text" in ctx.message && ctx.message.text.startsWith("/post"))) return [3 /*break*/, 1];
                         next();
-                        return [2 /*return*/];
+                        return [3 /*break*/, 5];
                     case 1:
                         if (!!auth.isAdmin(userId ? userId : 0)) return [3 /*break*/, 2];
                         return [2 /*return*/];
