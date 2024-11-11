@@ -6,6 +6,15 @@ import fs from "fs";
 import memory from "../handlers/commands/memory.js";
 import { Message } from "telegraf/typings/core/types/typegram.js";
 import telegram from "../services/telegram.js";
+import {
+  addCommandDescription,
+  aifileCommandDescription,
+  copyCommandDescription,
+  delMessagesDescription,
+  howToCreateSession,
+  mkcollectionDescription,
+  postBotDescription,
+} from "../utils/message.js";
 
 export default {
   async private(ctx: Context, next: () => void) {
@@ -58,7 +67,44 @@ export default {
     } else if (ctx.message && "text" in ctx.message && ctx.message.text === "/stopadd") {
       memory.setStopAdding(true);
     }
+    if (ctx.callbackQuery && "data" in ctx.callbackQuery) {
+      const callbackData = ctx.callbackQuery.data;
 
+      try {
+        let message: string;
+
+        // Determine the button clicked and respond accordingly
+        switch (callbackData) {
+          case "delMessages":
+            message = delMessagesDescription;
+            break;
+          case "addCommand":
+            message = addCommandDescription;
+            break;
+          case "mkcollection":
+            message = mkcollectionDescription;
+            break;
+          case "aifileCommand":
+            message = aifileCommandDescription;
+            break;
+          case "postBot":
+            message = postBotDescription;
+            break;
+          case "copyCommand":
+            message = copyCommandDescription;
+            break;
+          case "howToCreateSession":
+            message = howToCreateSession;
+            break;
+          default:
+            message = "Unknown topic. Please try again.";
+        }
+
+        await ctx.reply(message);
+      } catch (err) {
+        console.log("Error handling callback:", err);
+      }
+    }
     if (ctx.chat?.id !== undefined) {
       next();
     }

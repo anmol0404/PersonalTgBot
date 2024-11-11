@@ -8,6 +8,7 @@ import makeCollectionAIOHandler from "./makeCollection.js";
 import autoImageFileHandler from "./autoImageFileHandler.js";
 import helpHandler from "./help.js";
 import postHandler from "./post.js";
+import createSessionHandler from "./createSessionHandler.js";
 
 export default {
   startHandler,
@@ -23,6 +24,8 @@ export default {
   reqAIOHandler,
 
   addAIOHandler,
+
+  createSessionHandler,
 
   editAIOHandler,
 

@@ -51,6 +51,7 @@ app.command("post", commands.postHandler);
 app.command("eng", commands.reqAIOHandler);
 app.command("add", commands.addAIOHandler);
 app.command("help", commands.helpHandler);
+app.command("css", commands.createSessionHandler);
 app.command("del", commands.deleteAIOHandler);
 // mkc make collection
 app.command("mkc", commands.makeCollectionAIOHandler);

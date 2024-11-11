@@ -39,17 +39,21 @@ import { StringSession } from "telegram/sessions/index.js";
 import env from "./env.js";
 import { delay } from "../extra/delay.js";
 import memory from "../handlers/commands/memory.js";
-var apiIdBHAIString = env.apiId;
-var apiHashBHAI = env.apiHash;
-var sessionBHAI = env.session;
-export var client = new TelegramClient(new StringSession(sessionBHAI), parseInt(apiIdBHAIString), apiHashBHAI, { connectionRetries: 2 });
+var apiId = env.apiId;
+var api = env.apiHash;
+var session = env.session;
+export var client = new TelegramClient(new StringSession(session), parseInt(apiId), api, {
+    connectionRetries: 2,
+});
 env;
 export function getMessageFromId(chat, messageId) {
     return __awaiter(this, void 0, void 0, function () {
-        var source, message;
+        var source, message, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, client.connect()];
+                case 0:
+                    _a.trys.push([0, 4, 5, 7]);
+                    return [4 /*yield*/, client.connect()];
                 case 1:
                     _a.sent();
                     return [4 /*yield*/, client.getInputEntity(parseInt(chat))];
@@ -59,17 +63,26 @@ export function getMessageFromId(chat, messageId) {
                 case 3:
                     message = _a.sent();
                     return [2 /*return*/, message];
+                case 4:
+                    error_1 = _a.sent();
+                    console.error("Error getting message with ID ".concat(messageId, " in chat ").concat(chat, ":"), error_1);
+                    throw error_1;
+                case 5: return [4 /*yield*/, client.disconnect()];
+                case 6:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 7: return [2 /*return*/];
             }
         });
     });
 }
 export function getAllMessages(chat, oId) {
     return __awaiter(this, void 0, void 0, function () {
-        var source, offsetId, messages, error_1;
+        var source, offsetId, messages, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 5, , 6]);
+                    _a.trys.push([0, 4, 5, 7]);
                     return [4 /*yield*/, client.connect()];
                 case 1:
                     _a.sent();
@@ -84,15 +97,16 @@ export function getAllMessages(chat, oId) {
                         })];
                 case 3:
                     messages = _a.sent();
-                    return [4 /*yield*/, client.disconnect()];
-                case 4:
-                    _a.sent();
                     return [2 /*return*/, messages];
-                case 5:
-                    error_1 = _a.sent();
-                    console.error("Error getting all message IDs:", error_1);
-                    throw error_1;
-                case 6: return [2 /*return*/];
+                case 4:
+                    error_2 = _a.sent();
+                    console.error("Error getting all messages:", error_2);
+                    throw error_2;
+                case 5: return [4 /*yield*/, client.disconnect()];
+                case 6:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 7: return [2 /*return*/];
             }
         });
     });
@@ -100,10 +114,12 @@ export function getAllMessages(chat, oId) {
 export function deleteMessagesInBatches(channel, messageIds, endFrom) {
     if (endFrom === void 0) { endFrom = 0; }
     return __awaiter(this, void 0, void 0, function () {
-        var channelEntity, filteredMessageIds, batchSize, i, batch, error_2;
+        var channelEntity, filteredMessageIds, batchSize, i, batch, batchError_1, error_3;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, client.connect()];
+                case 0:
+                    _a.trys.push([0, 12, 13, 15]);
+                    return [4 /*yield*/, client.connect()];
                 case 1:
                     _a.sent();
                     return [4 /*yield*/, client.getInputEntity(channel)];
@@ -118,6 +134,7 @@ export function deleteMessagesInBatches(channel, messageIds, endFrom) {
                     batch = filteredMessageIds.slice(i, i + batchSize);
                     if (memory.getStopDeletion()) {
                         memory.set(false);
+                        console.log("Message deletion stopped by user.");
                         return [2 /*return*/];
                     }
                     _a.label = 4;
@@ -130,8 +147,8 @@ export function deleteMessagesInBatches(channel, messageIds, endFrom) {
                     console.log("Deleted messages: ".concat(batch));
                     return [3 /*break*/, 8];
                 case 6:
-                    error_2 = _a.sent();
-                    console.error("Error deleting batch ".concat(batch, ":"), error_2);
+                    batchError_1 = _a.sent();
+                    console.error("Error deleting batch ".concat(batch, ":"), batchError_1);
                     return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 40000); })];
                 case 7:
                     _a.sent();
@@ -143,10 +160,16 @@ export function deleteMessagesInBatches(channel, messageIds, endFrom) {
                 case 10:
                     i += batchSize;
                     return [3 /*break*/, 3];
-                case 11: return [4 /*yield*/, client.disconnect()];
+                case 11: return [3 /*break*/, 15];
                 case 12:
+                    error_3 = _a.sent();
+                    console.error("Error in deleteMessagesInBatches function:", error_3);
+                    throw error_3;
+                case 13: return [4 /*yield*/, client.disconnect()];
+                case 14:
                     _a.sent();
-                    return [2 /*return*/];
+                    return [7 /*endfinally*/];
+                case 15: return [2 /*return*/];
             }
         });
     });

@@ -40,11 +40,12 @@ import database from "../services/database.js";
 import fs from "fs";
 import memory from "../handlers/commands/memory.js";
 import telegram from "../services/telegram.js";
+import { addCommandDescription, aifileCommandDescription, copyCommandDescription, delMessagesDescription, howToCreateSession, mkcollectionDescription, postBotDescription, } from "../utils/message.js";
 export default {
     private: function (ctx, next) {
         var _a, _b, _c, _d, _e;
         return __awaiter(this, void 0, void 0, function () {
-            var userId, caption, msgId, _f, aios, jsonContent, filePath, sentMessage;
+            var userId, caption, msgId, _f, aios, jsonContent, filePath, sentMessage, callbackData, message, err_1;
             return __generator(this, function (_g) {
                 switch (_g.label) {
                     case 0:
@@ -117,6 +118,47 @@ export default {
                         }
                         _g.label = 16;
                     case 16:
+                        if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 20];
+                        callbackData = ctx.callbackQuery.data;
+                        _g.label = 17;
+                    case 17:
+                        _g.trys.push([17, 19, , 20]);
+                        message = void 0;
+                        // Determine the button clicked and respond accordingly
+                        switch (callbackData) {
+                            case "delMessages":
+                                message = delMessagesDescription;
+                                break;
+                            case "addCommand":
+                                message = addCommandDescription;
+                                break;
+                            case "mkcollection":
+                                message = mkcollectionDescription;
+                                break;
+                            case "aifileCommand":
+                                message = aifileCommandDescription;
+                                break;
+                            case "postBot":
+                                message = postBotDescription;
+                                break;
+                            case "copyCommand":
+                                message = copyCommandDescription;
+                                break;
+                            case "howToCreateSession":
+                                message = howToCreateSession;
+                                break;
+                            default:
+                                message = "Unknown topic. Please try again.";
+                        }
+                        return [4 /*yield*/, ctx.reply(message)];
+                    case 18:
+                        _g.sent();
+                        return [3 /*break*/, 20];
+                    case 19:
+                        err_1 = _g.sent();
+                        console.log("Error handling callback:", err_1);
+                        return [3 /*break*/, 20];
+                    case 20:
                         if (((_e = ctx.chat) === null || _e === void 0 ? void 0 : _e.id) !== undefined) {
                             next();
                         }

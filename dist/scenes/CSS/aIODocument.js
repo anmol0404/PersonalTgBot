@@ -34,36 +34,29 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { Markup } from "telegraf";
-export default function helpHandler(ctx) {
+import getRandomId from "../../extra/getRandomId.js";
+export default function getDramadata(dramaDetails, messageIds) {
     return __awaiter(this, void 0, void 0, function () {
-        var chatId, user, err_1;
+        var shareId;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    chatId = ctx.chat.id;
-                    user = ctx.from;
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, ctx.reply("Choose a topic below to get more help:", Markup.inlineKeyboard([
-                            [Markup.button.callback("Delete Messages Command", "delMessages")],
-                            [Markup.button.callback("Add Command", "addCommand")],
-                            [Markup.button.callback("Make Collection Command", "mkcollection")],
-                            [Markup.button.callback("AI File Command", "aifileCommand")],
-                            [Markup.button.callback("Post Bot Command", "postBot")],
-                            [Markup.button.callback("Copy Command", "copyCommand")],
-                            [Markup.button.callback("How to Create String Session", "howToCreateSession")],
-                        ]))];
-                case 2:
-                    _a.sent();
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_1 = _a.sent();
-                    console.log(err_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+            try {
+                shareId = parseInt(getRandomId().toString().slice(3));
+                return [2 /*return*/, {
+                        shareId: shareId,
+                        messageIds: messageIds || [],
+                        aIOTitle: dramaDetails.aIOTitle || "",
+                        aIOPosterID: dramaDetails.aIOPosterID || "0",
+                        aioShortUrl: "null",
+                        episodes: [
+                            { episodeNumber: 1, shortUrl: "DummyLink1", teleUrl: "DummyURL1" },
+                            { episodeNumber: 2, shortUrl: "DummyLink2", teleUrl: "DummyURL2" },
+                        ],
+                    }];
             }
+            catch (error) {
+                return [2 /*return*/, null];
+            }
+            return [2 /*return*/];
         });
     });
 }

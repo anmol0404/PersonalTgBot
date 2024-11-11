@@ -7,6 +7,7 @@ import makeCollectionAIOHandler from "./makeCollection.js";
 import autoImageFileHandler from "./autoImageFileHandler.js";
 import helpHandler from "./help.js";
 import postHandler from "./post.js";
+import createSessionHandler from "./createSessionHandler.js";
 declare const _default: {
     startHandler: typeof startHandler;
     postHandler: typeof postHandler;
@@ -15,6 +16,7 @@ declare const _default: {
     deleteAIOHandler: typeof deleteAIOHandler;
     reqAIOHandler: typeof reqAIOHandler;
     addAIOHandler: typeof addAIOHandler;
+    createSessionHandler: typeof createSessionHandler;
     editAIOHandler: typeof editAIOHandler;
     helpHandler: typeof helpHandler;
 };

@@ -34,35 +34,22 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { Markup } from "telegraf";
-export default function helpHandler(ctx) {
+import auth from "../../services/auth.js";
+export default function addAIOHandler(ctx) {
+    var _a;
     return __awaiter(this, void 0, void 0, function () {
-        var chatId, user, err_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
+        var userId;
+        return __generator(this, function (_b) {
+            switch (_b.label) {
                 case 0:
-                    chatId = ctx.chat.id;
-                    user = ctx.from;
-                    _a.label = 1;
+                    userId = (_a = ctx.from) === null || _a === void 0 ? void 0 : _a.id;
+                    if (!auth.isAdmin(userId ? userId : 0)) {
+                        return [2 /*return*/, ctx.reply("Sorry, you have no permission to do this")];
+                    }
+                    return [4 /*yield*/, ctx.scene.enter("CSS")];
                 case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, ctx.reply("Choose a topic below to get more help:", Markup.inlineKeyboard([
-                            [Markup.button.callback("Delete Messages Command", "delMessages")],
-                            [Markup.button.callback("Add Command", "addCommand")],
-                            [Markup.button.callback("Make Collection Command", "mkcollection")],
-                            [Markup.button.callback("AI File Command", "aifileCommand")],
-                            [Markup.button.callback("Post Bot Command", "postBot")],
-                            [Markup.button.callback("Copy Command", "copyCommand")],
-                            [Markup.button.callback("How to Create String Session", "howToCreateSession")],
-                        ]))];
-                case 2:
-                    _a.sent();
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_1 = _a.sent();
-                    console.log(err_1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    _b.sent();
+                    return [2 /*return*/];
             }
         });
     });

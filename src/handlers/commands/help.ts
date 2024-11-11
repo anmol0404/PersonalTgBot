@@ -1,23 +1,22 @@
+import { Markup } from "telegraf";
 import { CommandContext } from "../../interfaces.js";
-import {
-  addCommandDescription,
-  aifileCommandDescription,
-  postBotDescription,
-  delMessagesDescription,
-  mkcollectionDescription,
-} from "../../utils/message.js";
 
 export default async function helpHandler(ctx: CommandContext) {
   const chatId = ctx.chat.id;
   const user = ctx.from;
   try {
-    {
-      await ctx.reply(`${delMessagesDescription}\n`, { parse_mode: "Markdown" });
-      await ctx.reply(`${addCommandDescription}\n`, { parse_mode: "Markdown" });
-      await ctx.reply(`${mkcollectionDescription}\n`, { parse_mode: "Markdown" });
-      await ctx.reply(`${postBotDescription}\n`, { parse_mode: "Markdown" });
-      return await ctx.reply(`${aifileCommandDescription}\n`, { parse_mode: "Markdown" });
-    }
+    await ctx.reply(
+      "Choose a topic below to get more help:",
+      Markup.inlineKeyboard([
+        [Markup.button.callback("Delete Messages Command", "delMessages")],
+        [Markup.button.callback("Add Command", "addCommand")],
+        [Markup.button.callback("Make Collection Command", "mkcollection")],
+        [Markup.button.callback("AI File Command", "aifileCommand")],
+        [Markup.button.callback("Post Bot Command", "postBot")],
+        [Markup.button.callback("Copy Command", "copyCommand")],
+        [Markup.button.callback("How to Create String Session", "howToCreateSession")],
+      ])
+    );
   } catch (err) {
     console.log(err);
   }
