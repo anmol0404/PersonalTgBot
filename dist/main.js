@@ -48,6 +48,7 @@ app.use(stage.middleware());
 app.use(filters.private);
 app.command("start", commands.startHandler);
 app.command("post", commands.postHandler);
+app.command("copy", commands.copyHandler);
 app.command("eng", commands.reqAIOHandler);
 app.command("add", commands.addAIOHandler);
 app.command("help", commands.helpHandler);

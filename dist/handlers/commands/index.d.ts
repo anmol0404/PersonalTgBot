@@ -8,8 +8,10 @@ import autoImageFileHandler from "./autoImageFileHandler.js";
 import helpHandler from "./help.js";
 import postHandler from "./post.js";
 import createSessionHandler from "./createSessionHandler.js";
+import copyHandler from "./copy.js";
 declare const _default: {
     startHandler: typeof startHandler;
+    copyHandler: typeof copyHandler;
     postHandler: typeof postHandler;
     makeCollectionAIOHandler: typeof makeCollectionAIOHandler;
     autoImageFileHandler: typeof autoImageFileHandler;

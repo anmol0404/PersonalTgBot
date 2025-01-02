@@ -9,9 +9,12 @@ import autoImageFileHandler from "./autoImageFileHandler.js";
 import helpHandler from "./help.js";
 import postHandler from "./post.js";
 import createSessionHandler from "./createSessionHandler.js";
+import copyHandler from "./copy.js";
 
 export default {
   startHandler,
+
+  copyHandler,
 
   postHandler,
 
