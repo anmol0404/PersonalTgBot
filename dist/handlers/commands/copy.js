@@ -61,7 +61,7 @@ export default function copyHandler(ctx) {
                     _d.trys.push([1, 18, , 20]);
                     args = ctx.message.text.trim().replace("/copy", "").trim().split(" ");
                     if (!(args.length < 4)) return [3 /*break*/, 4];
-                    return [4 /*yield*/, ctx.reply("Please provide all details: username, promoUsername, startId, fromChat, toChat, collectionAIO, endId")];
+                    return [4 /*yield*/, ctx.reply("Please provide all details: promoUsername, startId: number, fromChat: number, endId: number, toChats: (string | number)[]")];
                 case 2:
                     _d.sent();
                     return [4 /*yield*/, ctx.scene.leave()];

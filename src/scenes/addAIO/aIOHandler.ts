@@ -13,7 +13,7 @@ let can = true;
 async function done(ctx: AIOWizardContext) {
   try {
     if (ctx.message && "text" in ctx.message && ctx.message.text === "/cancel") {
-      await ctx.reply("Share AIO Canceled, start again with /addaio");
+      await ctx.reply("Share AIO Canceled, start again with /add ");
       return await ctx.scene.leave();
     }
 

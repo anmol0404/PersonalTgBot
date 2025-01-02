@@ -50,7 +50,7 @@ function done(ctx) {
                 case 0:
                     _b.trys.push([0, 27, 29, 30]);
                     if (!(ctx.message && "text" in ctx.message && ctx.message.text === "/cancel")) return [3 /*break*/, 3];
-                    return [4 /*yield*/, ctx.reply("Share AIO Canceled, start again with /addaio")];
+                    return [4 /*yield*/, ctx.reply("Share AIO Canceled, start again with /add ")];
                 case 1:
                     _b.sent();
                     return [4 /*yield*/, ctx.scene.leave()];

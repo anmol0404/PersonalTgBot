@@ -20,7 +20,7 @@ export default async function copyHandler(ctx: any) {
 
     if (args.length < 4) {
       await ctx.reply(
-        "Please provide all details: username, promoUsername, startId, fromChat, toChat, collectionAIO, endId"
+        "Please provide all details: promoUsername, startId: number, fromChat: number, endId: number, toChats: (string | number)[]"
       );
       return await ctx.scene.leave();
     }

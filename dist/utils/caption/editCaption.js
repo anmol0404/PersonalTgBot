@@ -6,6 +6,7 @@ export function processCaption(oldCaption, join) {
         .replace(/-/g, " ")
         .replace(/JOIN: think/g, " ")
         .replace(/@DA_Rips/g, " ")
+        .replace("@ADrama_Lovers", " ")
         .replace(/Rips/g, " ")
         .replace(/(?:https?|ftp):\/\/[\n\S]+/g, "");
     newCaption = stringWithoutSpecialChars.replace(/@\w+\s?/g, " ");
@@ -32,7 +33,7 @@ export function processCaption(oldCaption, join) {
     if (drama !== -1) {
         newCaption = newCaption.substring(drama);
     }
-    newCaption += "\n 1080p MUXED SUBTITLES";
+    newCaption += "join: ".concat(join);
     return newCaption;
 }
 export function editAIOTitle(oldCaption, join) {
