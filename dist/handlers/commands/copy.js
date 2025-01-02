@@ -46,64 +46,74 @@ var apps = (_a = env.botTokens) === null || _a === void 0 ? void 0 : _a.map(func
 export default function copyHandler(ctx) {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function () {
-        var userId, args, promoUsername_1, numberArgs, startId, fromChat_1, endId, toChats, startFrom, messages, lastFetchedMessageId, extractedList, _loop_1, i, state_1, error_1, err_1;
-        var _c;
-        return __generator(this, function (_d) {
-            switch (_d.label) {
+        var userId, args, promoUsername_1, startIdStr, fromChatStr, endIdStr, toChatsStr, startId, fromChat_1, endId, toChats, error_1, startFrom, messages, lastFetchedMessageId, extractedList, _loop_1, i, state_1, error_2, err_1;
+        return __generator(this, function (_c) {
+            switch (_c.label) {
                 case 0:
                     userId = (_a = ctx.from) === null || _a === void 0 ? void 0 : _a.id;
                     if (!auth.isAdmin(userId ? userId : 0 || !memory.get())) {
                         return [2 /*return*/, ctx.reply("Sorry, you have no permission to do this")];
                     }
                     memory.set(true);
-                    _d.label = 1;
+                    _c.label = 1;
                 case 1:
-                    _d.trys.push([1, 18, , 20]);
+                    _c.trys.push([1, 22, , 24]);
                     args = ctx.message.text.trim().replace("/copy", "").trim().split(" ");
-                    if (!(args.length < 4)) return [3 /*break*/, 4];
-                    return [4 /*yield*/, ctx.reply("Please provide all details: promoUsername, startId: number, fromChat: number, endId: number, toChats: (string | number)[]")];
+                    if (!(args.length < 5)) return [3 /*break*/, 4];
+                    return [4 /*yield*/, ctx.reply("Please provide all details: promoUsername, startId: number, fromChat: number, endId: number, toChats: (number)[]")];
                 case 2:
-                    _d.sent();
+                    _c.sent();
                     return [4 /*yield*/, ctx.scene.leave()];
-                case 3: return [2 /*return*/, _d.sent()];
+                case 3: return [2 /*return*/, _c.sent()];
                 case 4:
-                    promoUsername_1 = args[0], numberArgs = args.slice(1);
+                    promoUsername_1 = args[0], startIdStr = args[1], fromChatStr = args[2], endIdStr = args[3], toChatsStr = args.slice(4);
                     startId = void 0, endId = void 0, toChats = void 0;
-                    try {
-                        _c = numberArgs.map(function (arg) {
-                            var parsedNumber = parseInt(arg, 10);
-                            if (isNaN(parsedNumber)) {
-                                ctx.reply("Invalid details. Please make sure startId, fromChat, toChat, and endId are numbers.");
-                                throw new Error("Invalid number in arguments");
-                            }
-                            return parsedNumber;
-                        }), startId = _c[0], fromChat_1 = _c[1], endId = _c[2], toChats = _c[3];
-                    }
-                    catch (error) {
-                        console.error("Error parsing arguments:", error);
-                        return [2 /*return*/];
-                    }
-                    startFrom = startId;
-                    _d.label = 5;
+                    _c.label = 5;
                 case 5:
-                    if (!memory.get()) return [3 /*break*/, 16];
+                    _c.trys.push([5, 6, , 8]);
+                    // Parse numeric arguments
+                    startId = parseInt(startIdStr, 10);
+                    fromChat_1 = parseInt(fromChatStr, 10);
+                    endId = parseInt(endIdStr, 10);
+                    toChats = toChatsStr.map(function (toChat) {
+                        var parsedToChat = parseInt(toChat, 10);
+                        if (isNaN(parsedToChat)) {
+                            throw new Error("Invalid number in toChats");
+                        }
+                        return parsedToChat;
+                    });
+                    if (isNaN(startId) || isNaN(fromChat_1) || isNaN(endId)) {
+                        throw new Error("Invalid number for startId, fromChat, or endId");
+                    }
+                    return [3 /*break*/, 8];
+                case 6:
+                    error_1 = _c.sent();
+                    return [4 /*yield*/, ctx.reply("Invalid details. Please ensure startId, fromChat, endId, and all toChats are valid numbers.")];
+                case 7:
+                    _c.sent();
+                    return [2 /*return*/];
+                case 8:
+                    startFrom = startId;
+                    _c.label = 9;
+                case 9:
+                    if (!memory.get()) return [3 /*break*/, 20];
                     memory.set(false);
                     return [4 /*yield*/, ctx.reply("Starting from message ID: ".concat(startFrom))];
-                case 6:
-                    _d.sent();
-                    _d.label = 7;
-                case 7:
-                    _d.trys.push([7, 13, , 15]);
+                case 10:
+                    _c.sent();
+                    _c.label = 11;
+                case 11:
+                    _c.trys.push([11, 17, , 19]);
                     return [4 /*yield*/, getAllMessages(fromChat_1, startFrom)];
-                case 8:
-                    messages = _d.sent();
+                case 12:
+                    messages = _c.sent();
                     lastFetchedMessageId = (_b = messages[messages.length - 1]) === null || _b === void 0 ? void 0 : _b.id;
                     startFrom = lastFetchedMessageId - 1;
                     extractedList = extractMessageData(messages);
                     _loop_1 = function (i) {
-                        var appIndex, appInstance, msg, caption, id, error_2;
-                        return __generator(this, function (_e) {
-                            switch (_e.label) {
+                        var appIndex, appInstance, msg, caption, id, error_3;
+                        return __generator(this, function (_d) {
+                            switch (_d.label) {
                                 case 0:
                                     appIndex = i % apps.length;
                                     appInstance = apps[appIndex];
@@ -111,38 +121,38 @@ export default function copyHandler(ctx) {
                                     caption = msg.caption;
                                     id = msg.id;
                                     startFrom = id;
-                                    _e.label = 1;
+                                    _d.label = 1;
                                 case 1:
-                                    _e.trys.push([1, 4, , 8]);
+                                    _d.trys.push([1, 4, , 8]);
                                     return [4 /*yield*/, Promise.all(toChats.map(function (toChat) {
                                             return appInstance.telegram.copyMessage(toChat, fromChat_1, id, {
                                                 caption: processCaption(caption, promoUsername_1 || ""),
                                             });
                                         }))];
                                 case 2:
-                                    _e.sent();
+                                    _d.sent();
                                     return [4 /*yield*/, delay(200, 400)];
                                 case 3:
-                                    _e.sent();
+                                    _d.sent();
                                     return [3 /*break*/, 8];
                                 case 4:
-                                    error_2 = _e.sent();
-                                    if (!(error_2.code === 429)) return [3 /*break*/, 6];
-                                    console.log("Rate limited: ".concat(error_2));
+                                    error_3 = _d.sent();
+                                    if (!(error_3.code === 429)) return [3 /*break*/, 6];
+                                    console.log("Rate limited: ".concat(error_3));
                                     return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 40000); })];
                                 case 5:
-                                    _e.sent();
+                                    _d.sent();
                                     return [3 /*break*/, 7];
                                 case 6:
-                                    console.error("Failed to copy message with ID ".concat(id, ": ").concat(error_2));
+                                    console.error("Failed to copy message with ID ".concat(id, ": ").concat(error_3));
                                     return [2 /*return*/, "continue"];
                                 case 7: return [3 /*break*/, 8];
                                 case 8:
                                     if (!(i % 20 === 0)) return [3 /*break*/, 10];
                                     return [4 /*yield*/, ctx.reply("Processed up to message ID: ".concat(extractedList[i].id.toString()))];
                                 case 9:
-                                    _e.sent();
-                                    _e.label = 10;
+                                    _d.sent();
+                                    _d.label = 10;
                                 case 10:
                                     if (id >= endId || messages.length === 0) {
                                         memory.set(true);
@@ -153,46 +163,46 @@ export default function copyHandler(ctx) {
                         });
                     };
                     i = 0;
-                    _d.label = 9;
-                case 9:
-                    if (!(i < extractedList.length)) return [3 /*break*/, 12];
+                    _c.label = 13;
+                case 13:
+                    if (!(i < extractedList.length)) return [3 /*break*/, 16];
                     return [5 /*yield**/, _loop_1(i)];
-                case 10:
-                    state_1 = _d.sent();
+                case 14:
+                    state_1 = _c.sent();
                     if (state_1 === "break")
-                        return [3 /*break*/, 12];
-                    _d.label = 11;
-                case 11:
+                        return [3 /*break*/, 16];
+                    _c.label = 15;
+                case 15:
                     i++;
-                    return [3 /*break*/, 9];
-                case 12:
+                    return [3 /*break*/, 13];
+                case 16:
                     if (lastFetchedMessageId >= endId || messages.length === 0) {
                         memory.set(true);
-                        return [3 /*break*/, 16];
+                        return [3 /*break*/, 20];
                     }
-                    return [3 /*break*/, 15];
-                case 13:
-                    error_1 = _d.sent();
-                    console.error("Error fetching messages. Retrying in 3 minutes...", error_1);
-                    return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 3 * 60 * 1000); })];
-                case 14:
-                    _d.sent();
-                    return [3 /*break*/, 15];
-                case 15:
-                    memory.set(true);
-                    return [3 /*break*/, 5];
-                case 16: return [4 /*yield*/, ctx.reply("Operation completed successfully!")];
+                    return [3 /*break*/, 19];
                 case 17:
-                    _d.sent();
-                    return [3 /*break*/, 20];
+                    error_2 = _c.sent();
+                    console.error("Error fetching messages. Retrying in 3 minutes...", error_2);
+                    return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 3 * 60 * 1000); })];
                 case 18:
-                    err_1 = _d.sent();
-                    console.error("Error processing command:", err_1);
-                    return [4 /*yield*/, ctx.reply("An error occurred. Please check the command format: /add startId, fromChat, endId, ...toChats. Make sure bots are admin in both channels.")];
+                    _c.sent();
+                    return [3 /*break*/, 19];
                 case 19:
-                    _d.sent();
-                    return [3 /*break*/, 20];
-                case 20: return [2 /*return*/];
+                    memory.set(true);
+                    return [3 /*break*/, 9];
+                case 20: return [4 /*yield*/, ctx.reply("Operation completed successfully!")];
+                case 21:
+                    _c.sent();
+                    return [3 /*break*/, 24];
+                case 22:
+                    err_1 = _c.sent();
+                    console.error("Error processing command:", err_1);
+                    return [4 /*yield*/, ctx.reply("An error occurred. Please check the command format: /copy promoUsername startId fromChat endId toChats. Make sure bots are admin in all channels.")];
+                case 23:
+                    _c.sent();
+                    return [3 /*break*/, 24];
+                case 24: return [2 /*return*/];
             }
         });
     });

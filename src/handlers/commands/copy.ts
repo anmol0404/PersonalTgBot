@@ -5,6 +5,7 @@ import { processCaption } from "../../utils/caption/editCaption.js";
 import env from "../../services/env.js";
 import { getAllMessages } from "../../services/client.js";
 import memory from "./memory.js";
+
 const apps = env.botTokens?.map((token) => new Telegraf(token))!;
 
 export default async function copyHandler(ctx: any) {
@@ -18,29 +19,37 @@ export default async function copyHandler(ctx: any) {
   try {
     const args = ctx.message.text.trim().replace("/copy", "").trim().split(" ");
 
-    if (args.length < 4) {
+    if (args.length < 5) {
       await ctx.reply(
-        "Please provide all details: promoUsername, startId: number, fromChat: number, endId: number, toChats: (string | number)[]"
+        "Please provide all details: promoUsername, startId: number, fromChat: number, endId: number, toChats: (number)[]"
       );
       return await ctx.scene.leave();
     }
 
-    const [promoUsername, ...numberArgs] = args;
+    const [promoUsername, startIdStr, fromChatStr, endIdStr, ...toChatsStr] = args;
 
-    let startId: number, fromChat: number, endId: number, toChats: (string | number)[];
+    let startId: number, fromChat: number, endId: number, toChats: number[];
+
     try {
-      [startId, fromChat, endId, toChats] = numberArgs.map((arg: string) => {
-        const parsedNumber = parseInt(arg, 10);
-        if (isNaN(parsedNumber)) {
-          ctx.reply(
-            "Invalid details. Please make sure startId, fromChat, toChat, and endId are numbers."
-          );
-          throw new Error("Invalid number in arguments");
+      // Parse numeric arguments
+      startId = parseInt(startIdStr, 10);
+      fromChat = parseInt(fromChatStr, 10);
+      endId = parseInt(endIdStr, 10);
+      toChats = toChatsStr.map((toChat: string) => {
+        const parsedToChat = parseInt(toChat, 10);
+        if (isNaN(parsedToChat)) {
+          throw new Error("Invalid number in toChats");
         }
-        return parsedNumber;
+        return parsedToChat;
       });
+
+      if (isNaN(startId) || isNaN(fromChat) || isNaN(endId)) {
+        throw new Error("Invalid number for startId, fromChat, or endId");
+      }
     } catch (error) {
-      console.error("Error parsing arguments:", error);
+      await ctx.reply(
+        "Invalid details. Please ensure startId, fromChat, endId, and all toChats are valid numbers."
+      );
       return;
     }
 
@@ -66,7 +75,7 @@ export default async function copyHandler(ctx: any) {
 
           try {
             await Promise.all(
-              toChats.map((toChat: string | number) =>
+              toChats.map((toChat) =>
                 appInstance.telegram.copyMessage(toChat, fromChat, id, {
                   caption: processCaption(caption, promoUsername || ""),
                 })
@@ -109,15 +118,12 @@ export default async function copyHandler(ctx: any) {
   } catch (err) {
     console.error("Error processing command:", err);
     await ctx.reply(
-      "An error occurred. Please check the command format: /add startId, fromChat, endId, ...toChats. Make sure bots are admin in both channels."
+      "An error occurred. Please check the command format: /copy promoUsername startId fromChat endId toChats. Make sure bots are admin in all channels."
     );
   }
 }
 
-function extractMessageData(messages: any[]): {
-  id: number;
-  caption: string;
-}[] {
+function extractMessageData(messages: any[]): { id: number; caption: string }[] {
   return messages.map((msg) => {
     const id = msg.id ?? 0;
     const messageText = msg.message ?? "";
