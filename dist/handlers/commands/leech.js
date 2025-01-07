@@ -34,27 +34,59 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import env from "../../services/env.js";
-export default function startHandler(ctx) {
+import auth from "../../services/auth.js";
+import { isValidUrl } from "../../utils/validator.js";
+import { VideoHandler } from "../../utils/Handler/videoHandler.js";
+export default function leechHandler(ctx) {
     var _a;
     return __awaiter(this, void 0, void 0, function () {
-        var error_1;
+        var userId, urls, invalidUrls, statusMessage, index, url, error_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    _b.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, ctx.reply("Welcome to the bot:: " + ((_a = ctx.from) === null || _a === void 0 ? void 0 : _a.username))];
+                    userId = (_a = ctx.from) === null || _a === void 0 ? void 0 : _a.id;
+                    if (!auth.isAdmin(userId ? userId : 0)) {
+                        return [2 /*return*/, ctx.reply("Sorry, you have no permission to do this")];
+                    }
+                    if (!(ctx.message && "text" in ctx.message)) return [3 /*break*/, 10];
+                    urls = ctx.message.text.split(" ").slice(1);
+                    if (urls.length === 0) {
+                        return [2 /*return*/, ctx.reply("❌ Please provide at least one URL")];
+                    }
+                    invalidUrls = urls.filter(function (url) { return !isValidUrl(url); });
+                    if (invalidUrls.length > 0) {
+                        return [2 /*return*/, ctx.reply("\u274C Invalid URLs detected:\n".concat(invalidUrls.join("\n")))];
+                    }
+                    return [4 /*yield*/, ctx.reply("⏳ Initializing download...")];
                 case 1:
-                    _b.sent();
-                    return [3 /*break*/, 3];
+                    statusMessage = (_b.sent());
+                    index = 0;
+                    _b.label = 2;
                 case 2:
+                    if (!(index < urls.length)) return [3 /*break*/, 9];
+                    url = urls[index];
+                    _b.label = 3;
+                case 3:
+                    _b.trys.push([3, 6, , 8]);
+                    return [4 /*yield*/, ctx.telegram.editMessageText(statusMessage.chat.id, statusMessage.message_id, undefined, "\uD83C\uDFAF Processing URL ".concat(index + 1, "/").concat(urls.length, "\n\n\uD83D\uDD17 ").concat(url))];
+                case 4:
+                    _b.sent();
+                    return [4 /*yield*/, VideoHandler.handleDownload(ctx, url, statusMessage)];
+                case 5:
+                    _b.sent();
+                    return [3 /*break*/, 8];
+                case 6:
                     error_1 = _b.sent();
-                    return [3 /*break*/, 3];
-                case 3: return [2 /*return*/];
+                    return [4 /*yield*/, ctx.reply("\u274C Error downloading ".concat(url, ":\n").concat(error_1 instanceof Error ? error_1.message : "Unknown error"))];
+                case 7:
+                    _b.sent();
+                    return [3 /*break*/, 8];
+                case 8:
+                    index++;
+                    return [3 /*break*/, 2];
+                case 9: return [2 /*return*/, ctx.telegram.editMessageText(statusMessage.chat.id, statusMessage.message_id, undefined, "✅ All downloads completed!")];
+                case 10: return [2 /*return*/];
             }
         });
     });
 }
-export var generateInviteLink = function (userId) {
-    return "https://t.me/".concat(env.botUserName, "?start=invite-").concat(userId);
-};

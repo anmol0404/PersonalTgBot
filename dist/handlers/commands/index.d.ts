@@ -9,8 +9,10 @@ import helpHandler from "./help.js";
 import postHandler from "./post.js";
 import createSessionHandler from "./createSessionHandler.js";
 import copyHandler from "./copy.js";
+import leechHandler from "./leech.js";
 declare const _default: {
     startHandler: typeof startHandler;
+    leechHandler: typeof leechHandler;
     copyHandler: typeof copyHandler;
     postHandler: typeof postHandler;
     makeCollectionAIOHandler: typeof makeCollectionAIOHandler;

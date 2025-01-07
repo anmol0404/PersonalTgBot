@@ -3,6 +3,7 @@ declare const _default: {
     sortApiKey: string;
     baseUrl: string;
     token: string;
+    channel: number;
     userId: number;
     botTokens: string[] | undefined;
     botUserName: string | undefined;

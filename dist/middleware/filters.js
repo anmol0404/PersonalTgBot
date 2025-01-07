@@ -40,7 +40,7 @@ import database from "../services/database.js";
 import fs from "fs";
 import memory from "../handlers/commands/memory.js";
 import telegram from "../services/telegram.js";
-import { addCommandDescription, aifileCommandDescription, copyCommandDescription, delMessagesDescription, howToCreateSession, mkcollectionDescription, postBotDescription, } from "../utils/message.js";
+import { addCommandDescription, aifileCommandDescription, copyCommandDescription, delMessagesDescription, howToCreateSession, howToLeech, mkcollectionDescription, postBotDescription, } from "../utils/message.js";
 export default {
     private: function (ctx, next) {
         var _a, _b, _c, _d, _e;
@@ -146,6 +146,9 @@ export default {
                                 break;
                             case "howToCreateSession":
                                 message = howToCreateSession;
+                                break;
+                            case "leechCommand":
+                                message = howToLeech;
                                 break;
                             default:
                                 message = "Unknown topic. Please try again.";

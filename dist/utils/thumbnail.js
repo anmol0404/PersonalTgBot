@@ -34,27 +34,51 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import env from "../../services/env.js";
-export default function startHandler(ctx) {
-    var _a;
+import fs from 'fs-extra';
+import path from 'path';
+var THUMB_DIR = path.join(__dirname, '../../thumbnails');
+export function setThumb(userId, buffer) {
     return __awaiter(this, void 0, void 0, function () {
-        var error_1;
+        var thumbPath, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, fs.ensureDir(THUMB_DIR)];
+                case 1:
+                    _a.sent();
+                    thumbPath = path.join(THUMB_DIR, "".concat(userId, ".jpg"));
+                    return [4 /*yield*/, fs.writeFile(thumbPath, buffer)];
+                case 2:
+                    _a.sent();
+                    return [2 /*return*/, true];
+                case 3:
+                    error_1 = _a.sent();
+                    throw new Error("Failed to save thumbnail: ".concat(error_1 instanceof Error ? error_1.message : 'Unknown error'));
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+export function getThumb(userId) {
+    return __awaiter(this, void 0, void 0, function () {
+        var thumbPath, _a;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
                     _b.trys.push([0, 2, , 3]);
-                    return [4 /*yield*/, ctx.reply("Welcome to the bot:: " + ((_a = ctx.from) === null || _a === void 0 ? void 0 : _a.username))];
+                    thumbPath = path.join(THUMB_DIR, "".concat(userId, ".jpg"));
+                    return [4 /*yield*/, fs.pathExists(thumbPath)];
                 case 1:
-                    _b.sent();
-                    return [3 /*break*/, 3];
+                    if (_b.sent()) {
+                        return [2 /*return*/, thumbPath];
+                    }
+                    return [2 /*return*/, null];
                 case 2:
-                    error_1 = _b.sent();
-                    return [3 /*break*/, 3];
+                    _a = _b.sent();
+                    return [2 /*return*/, null];
                 case 3: return [2 /*return*/];
             }
         });
     });
 }
-export var generateInviteLink = function (userId) {
-    return "https://t.me/".concat(env.botUserName, "?start=invite-").concat(userId);
-};

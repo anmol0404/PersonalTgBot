@@ -10,9 +10,12 @@ import helpHandler from "./help.js";
 import postHandler from "./post.js";
 import createSessionHandler from "./createSessionHandler.js";
 import copyHandler from "./copy.js";
+import leechHandler from "./leech.js";
 
 export default {
   startHandler,
+
+  leechHandler,
 
   copyHandler,
 

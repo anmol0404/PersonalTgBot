@@ -53,6 +53,7 @@ export default function helpHandler(ctx) {
                             [Markup.button.callback("AI File Command", "aifileCommand")],
                             [Markup.button.callback("Post Bot Command", "postBot")],
                             [Markup.button.callback("Copy Command", "copyCommand")],
+                            [Markup.button.callback("leech Command", "leechCommand")],
                             [Markup.button.callback("How to Create String Session", "howToCreateSession")],
                         ]))];
                 case 2:

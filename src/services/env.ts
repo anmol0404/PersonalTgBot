@@ -1,12 +1,13 @@
 import "dotenv/config";
 
 const env = process.env;
-const token = env.TELEGRAM_BOT_TOKEN;
+const token = env.BOT_TOKEN;
 
 const dbAIOChannelId = Number(env.DB_AIO_CHANNEL_ID);
 const dbPosterLink = env.DB_POSTER_LINK;
 const dbPosterID = Number(env.DB_POSTER_ID);
 const channelSource = Number(env.CHANNEL_SOURCE_ID);
+const channel = Number(env.LEECH_CHANNEL_ID);
 
 const channelSourceLink = env.CHANNEL_SOURCE_LINK;
 
@@ -38,7 +39,7 @@ const imgNxtFileDestiChannel = Number(env.IMAGE_NEXT_FILE_DESTI_CHANNEL);
 const imgNxtFileCollection = Number(env.IMAGE_NEXT_FILE_COLLECTION);
 const userId = Number(env.USER_BOT_ID);
 if (!token) {
-  throw Error("Provide TELEGRAM_BOT_TOKEN");
+  throw Error("Provide BOT_TOKEN");
 }
 
 if (!adminIds) {
@@ -48,6 +49,7 @@ export default {
   sortApiKey,
   baseUrl,
   token,
+  channel,
   userId,
   botTokens,
   botUserName,

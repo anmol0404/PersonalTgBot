@@ -159,3 +159,14 @@ To create a string session for your Telegram bot, follow these steps:
    - Once the OTP is verified, the bot will create a string session for you. 
    - The bot will then send you the session string. This is a long alphanumeric string that represents your active session.
 `;
+export const howToLeech =
+  "📖 *Bot Commands Guide*\n\n" +
+  "1️⃣ *Video Downloads:*\n" +
+  "  • `/leech [url]` - Download single video\n" +
+  "  • `/leech [url1] [url2]` - Multiple videos\n\n" +
+  "2️⃣ *Thumbnail Management:*\n" +
+  "  • `/setthumb` - Set custom thumbnail\n" +
+  "  • `/thumb` - View current thumbnail\n\n" +
+  "3️⃣ *Other Commands:*\n" +
+  "  • `/start` - Start the bot\n" +
+  "  • `/help` - Show this help";

@@ -1,11 +1,12 @@
 var _a, _b, _c, _d, _e;
 import "dotenv/config";
 var env = process.env;
-var token = env.TELEGRAM_BOT_TOKEN;
+var token = env.BOT_TOKEN;
 var dbAIOChannelId = Number(env.DB_AIO_CHANNEL_ID);
 var dbPosterLink = env.DB_POSTER_LINK;
 var dbPosterID = Number(env.DB_POSTER_ID);
 var channelSource = Number(env.CHANNEL_SOURCE_ID);
+var channel = Number(env.LEECH_CHANNEL_ID);
 var channelSourceLink = env.CHANNEL_SOURCE_LINK;
 var development = env.DEVELOPMENT;
 var webhookDomain = env.WEBHOOK_DOMAIN;
@@ -33,7 +34,7 @@ var imgNxtFileDestiChannel = Number(env.IMAGE_NEXT_FILE_DESTI_CHANNEL);
 var imgNxtFileCollection = Number(env.IMAGE_NEXT_FILE_COLLECTION);
 var userId = Number(env.USER_BOT_ID);
 if (!token) {
-    throw Error("Provide TELEGRAM_BOT_TOKEN");
+    throw Error("Provide BOT_TOKEN");
 }
 if (!adminIds) {
     throw Error("Provide ADMIN_IDS");
@@ -42,6 +43,7 @@ export default {
     sortApiKey: sortApiKey,
     baseUrl: baseUrl,
     token: token,
+    channel: channel,
     userId: userId,
     botTokens: botTokens,
     botUserName: botUserName,

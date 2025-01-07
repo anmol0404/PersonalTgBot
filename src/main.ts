@@ -36,6 +36,8 @@ app.command("aifile", commands.autoImageFileHandler);
 
 app.command("edit", commands.editAIOHandler);
 
+app.command("leech", commands.leechHandler);
+
 app.catch(async (err, ctx) => {
   console.error(`Error in ${ctx.updateType}`, err);
 });

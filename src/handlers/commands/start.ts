@@ -3,7 +3,7 @@ import env from "../../services/env.js";
 
 export default async function startHandler(ctx: CommandContext) {
   try {
-    await ctx.reply("Welcome to the bot!" + ctx.from?.username);
+    await ctx.reply("Welcome to the bot:: " + ctx.from?.username);
   } catch (error) {}
 }
 export const generateInviteLink = (userId: string) => {

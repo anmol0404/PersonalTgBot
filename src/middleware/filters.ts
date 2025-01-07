@@ -12,6 +12,7 @@ import {
   copyCommandDescription,
   delMessagesDescription,
   howToCreateSession,
+  howToLeech,
   mkcollectionDescription,
   postBotDescription,
 } from "../utils/message.js";
@@ -95,6 +96,9 @@ export default {
             break;
           case "howToCreateSession":
             message = howToCreateSession;
+            break;
+          case "leechCommand":
+            message = howToLeech;
             break;
           default:
             message = "Unknown topic. Please try again.";

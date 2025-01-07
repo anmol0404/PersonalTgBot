@@ -1,4 +1,4 @@
-import { TelegramClient } from "telegram/index.js";
+import { Api, TelegramClient } from "telegram/index.js";
 import { StringSession } from "telegram/sessions/index.js";
 import env from "./env.js";
 import { delay } from "../extra/delay.js";
@@ -85,4 +85,15 @@ export async function deleteMessagesInBatches(
   } finally {
     await client.disconnect();
   }
+}
+
+export async function uploadFile(channel: number, path: string): Promise<Api.Message | undefined> {
+  try {
+    await client.connect();
+    const message = await client.sendFile(channel, {
+      file: path,
+      progressCallback: console.log,
+    });
+    return message;
+  } catch (error) {}
 }

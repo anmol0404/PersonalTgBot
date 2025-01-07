@@ -174,3 +174,28 @@ export function deleteMessagesInBatches(channel, messageIds, endFrom) {
         });
     });
 }
+export function uploadFile(channel, path) {
+    return __awaiter(this, void 0, void 0, function () {
+        var message, error_4;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, , 4]);
+                    return [4 /*yield*/, client.connect()];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, client.sendFile(channel, {
+                            file: path,
+                            progressCallback: console.log,
+                        })];
+                case 2:
+                    message = _a.sent();
+                    return [2 /*return*/, message];
+                case 3:
+                    error_4 = _a.sent();
+                    return [3 /*break*/, 4];
+                case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
