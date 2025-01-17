@@ -3,7 +3,6 @@ import path from "path";
 import axios from "axios";
 import { ProgressCallback, VideoInfo } from "../types";
 import { formatProgress, prettyBytes } from "../utils/formatter.js";
-
 const DOWNLOADS_DIR = path.join(process.cwd(), "downloads");
 
 export async function downloadVideo(
@@ -97,10 +96,10 @@ export async function downloadVideo(
     return {
       path: filePath,
       title: fileName,
-      quality: "N/A", // Placeholder for video quality
-      duration: 0, // Placeholder for video duration
-      width: 0, // Placeholder for video width
-      height: 0, // Placeholder for video height
+      quality: "N/A",
+      duration: 44335,
+      width: 0,
+      height: 0,
       size: prettyBytes(totalBytes),
     };
   } catch (error) {

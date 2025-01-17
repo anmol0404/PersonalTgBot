@@ -34,11 +34,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import { TelegramClient } from "telegram/index.js";
+import { Api, TelegramClient } from "telegram/index.js";
 import { StringSession } from "telegram/sessions/index.js";
 import env from "./env.js";
 import { delay } from "../extra/delay.js";
 import memory from "../handlers/commands/memory.js";
+import { formatDuration } from "../utils/formatter.js";
+import { v2 as cloudinary } from "cloudinary";
 var apiId = env.apiId;
 var api = env.apiHash;
 var session = env.session;
@@ -174,9 +176,10 @@ export function deleteMessagesInBatches(channel, messageIds, endFrom) {
         });
     });
 }
-export function uploadFile(channel, path) {
+export function uploadFile(channel, videoInfo) {
     return __awaiter(this, void 0, void 0, function () {
         var message, error_4;
+        var _this = this;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -185,8 +188,26 @@ export function uploadFile(channel, path) {
                 case 1:
                     _a.sent();
                     return [4 /*yield*/, client.sendFile(channel, {
-                            file: path,
-                            progressCallback: console.log,
+                            file: videoInfo.path,
+                            fileSize: parseInt(videoInfo.size) || 0,
+                            workers: 2,
+                            supportsStreaming: true,
+                            // thumb: path,
+                            caption: "".concat(videoInfo.title, "\n").concat(formatDuration(videoInfo.duration)),
+                            attributes: [
+                                new Api.DocumentAttributeVideo({
+                                    duration: videoInfo.duration,
+                                    w: 600,
+                                    h: 350,
+                                    supportsStreaming: true,
+                                }),
+                            ],
+                            progressCallback: function (onprogress) { return __awaiter(_this, void 0, void 0, function () {
+                                return __generator(this, function (_a) {
+                                    console.log(onprogress);
+                                    return [2 /*return*/];
+                                });
+                            }); },
                         })];
                 case 2:
                     message = _a.sent();
@@ -195,6 +216,150 @@ export function uploadFile(channel, path) {
                     error_4 = _a.sent();
                     return [3 /*break*/, 4];
                 case 4: return [2 /*return*/];
+            }
+        });
+    });
+}
+// export async function uploadFile(
+//   channel: number,
+//   videoInfo: VideoInfo
+// ): Promise<Api.Message | undefined> {
+//   try {
+//     await client.connect();
+//     const message = await client.sendFile(channel, {
+//       file: await client.uploadFile({
+//         file: new CustomFile(
+//           videoInfo.path.replace("./", "") + ".mp4",
+//           parseInt(videoInfo.size) || 0,
+//           videoInfo.path
+//         ),
+//         workers: 2,
+//       }),
+//       // thumb: path,
+//       attributes: [
+//         new Api.DocumentAttributeVideo({
+//           duration: videoInfo.duration,
+//           w: 350,
+//           h: 200,
+//           supportsStreaming: true,
+//         }),
+//       ],
+//       progressCallback: console.log,
+//     });
+//     return message;
+//   } catch (error) {}
+// }
+export function downloadPhoto(message_id, chat_id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var source, messages, message, photo, error_5;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 5, 6, 8]);
+                    return [4 /*yield*/, client.connect()];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, client.getInputEntity(chat_id)];
+                case 2:
+                    source = _a.sent();
+                    return [4 /*yield*/, client.getMessages(source, { ids: [message_id] })];
+                case 3:
+                    messages = _a.sent();
+                    message = messages[0];
+                    return [4 /*yield*/, client.downloadMedia(message)];
+                case 4:
+                    photo = _a.sent();
+                    return [2 /*return*/, photo];
+                case 5:
+                    error_5 = _a.sent();
+                    console.error("Error downloading photo:", error_5);
+                    throw error_5;
+                case 6: return [4 /*yield*/, client.disconnect()];
+                case 7:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 8: return [2 /*return*/];
+            }
+        });
+    });
+}
+export function downloadAndUploadPhoto(message_id, chat_id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var source, messages, message, photoBuffer_1, uploadResult, url, error_6;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 6, 7, 9]);
+                    return [4 /*yield*/, client.connect()];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, client.getInputEntity(chat_id)];
+                case 2:
+                    source = _a.sent();
+                    return [4 /*yield*/, client.getMessages(source, { ids: [message_id] })];
+                case 3:
+                    messages = _a.sent();
+                    message = messages[0];
+                    return [4 /*yield*/, client.downloadMedia(message)];
+                case 4:
+                    photoBuffer_1 = _a.sent();
+                    if (!photoBuffer_1) {
+                        throw new Error("Photo not found or could not be downloaded.");
+                    }
+                    return [4 /*yield*/, new Promise(function (resolve, reject) {
+                            var stream = cloudinary.uploader.upload_stream({ resource_type: "image" }, // Adjust resource type if necessary
+                            function (error, result) {
+                                if (error)
+                                    reject(error);
+                                else
+                                    resolve(result);
+                            });
+                            stream.end(photoBuffer_1);
+                        })];
+                case 5:
+                    uploadResult = _a.sent();
+                    url = uploadResult.secure_url;
+                    return [2 /*return*/, url];
+                case 6:
+                    error_6 = _a.sent();
+                    console.error("Error downloading or uploading photo:", error_6);
+                    throw error_6;
+                case 7: return [4 /*yield*/, client.disconnect()];
+                case 8:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 9: return [2 /*return*/];
+            }
+        });
+    });
+}
+export function getAllParticipantIds(chat_id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var source, participants, userIds, error_7;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 4, 5, 7]);
+                    return [4 /*yield*/, client.connect()];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, client.getInputEntity(chat_id)];
+                case 2:
+                    source = _a.sent();
+                    return [4 /*yield*/, client.getParticipants(source)];
+                case 3:
+                    participants = _a.sent();
+                    userIds = participants.map(function (participant) { return participant.id; });
+                    return [2 /*return*/, userIds];
+                case 4:
+                    error_7 = _a.sent();
+                    console.error("Error getting all participant IDs:", error_7);
+                    throw error_7;
+                case 5: return [4 /*yield*/, client.disconnect()];
+                case 6:
+                    _a.sent();
+                    return [7 /*endfinally*/];
+                case 7: return [2 /*return*/];
             }
         });
     });

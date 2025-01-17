@@ -17,6 +17,10 @@ const otherDomain = env.OTHER_DOMIAN || "";
 const apiId = env.API_ID || "";
 const apiHash = env.API_HASH || "";
 const session = env.SESSION_ID || "";
+// cloudinary
+const cloudName = env.CLOUD_NAME;
+const apiKey = env.API_KEY;
+const apiSecret = env.API_SECRET;
 
 const botUserName = env.BOT_USERNAME;
 const port = env.PORT || 8080;
@@ -25,6 +29,8 @@ const forceGroupIds = env.FORCE_GROUP_IDS?.split(" ").map(Number) || [];
 const allowGroups = env.ALLOW_GROUPS?.split(" ").map(Number) || [];
 const adminIds = env.ADMIN_IDS?.split(" ").map(Number);
 const databaseUrl = env.DATABASE_URL;
+const ownerId = Number(env.OWNER_ID) || "";
+
 const join = env.JOIN || "";
 const backup = env.BACKUP || "";
 const request = env.REQUEST || "";
@@ -46,6 +52,10 @@ if (!adminIds) {
   throw Error("Provide ADMIN_IDS");
 }
 export default {
+  cloudName,
+  ownerId,
+  apiKey,
+  apiSecret,
   sortApiKey,
   baseUrl,
   token,

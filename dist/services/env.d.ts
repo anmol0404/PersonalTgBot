@@ -1,5 +1,9 @@
 import "dotenv/config";
 declare const _default: {
+    cloudName: string | undefined;
+    ownerId: string | number;
+    apiKey: string | undefined;
+    apiSecret: string | undefined;
     sortApiKey: string;
     baseUrl: string;
     token: string;

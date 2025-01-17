@@ -8,6 +8,7 @@ import { delay } from "../extra/delay.js";
 import { editAIOTitle, processCaption } from "../utils/caption/editCaption.js";
 import { getMessageFromId } from "./client.js";
 const botTokens = env.botTokens!;
+import { v2 as cloudinary } from "cloudinary";
 
 class Telegram {
   app: Telegraf<Scenes.WizardContext>;
@@ -18,6 +19,11 @@ class Telegram {
   inviteLinks: Map<number, string>;
 
   constructor() {
+    cloudinary.config({
+      cloud_name: env.cloudName,
+      api_key: env.apiKey,
+      api_secret: env.apiSecret,
+    });
     this.app = new Telegraf<Scenes.WizardContext>(env.token);
     this.messages = new Map();
     this.waitingMessageId = NaN;

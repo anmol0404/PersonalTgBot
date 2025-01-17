@@ -105,7 +105,7 @@ async function handleOTPVerification(ctx: AIOWizardContext) {
       );
       // Save the session string
       const sessionString = client.session.save();
-      await ctx.reply(`\`\n${sessionString.toString()}\``);
+      await ctx.reply(`\`\n${sessionString}\``);
       await ctx.reply(
         "Authentication successful! Save your session key and don't share it with anyone."
       );

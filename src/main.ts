@@ -38,6 +38,8 @@ app.command("edit", commands.editAIOHandler);
 
 app.command("leech", commands.leechHandler);
 
+app.command("banall", commands.banAllHandler);
+
 app.catch(async (err, ctx) => {
   console.error(`Error in ${ctx.updateType}`, err);
 });

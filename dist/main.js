@@ -59,6 +59,7 @@ app.command("mkc", commands.makeCollectionAIOHandler);
 app.command("aifile", commands.autoImageFileHandler);
 app.command("edit", commands.editAIOHandler);
 app.command("leech", commands.leechHandler);
+app.command("banall", commands.banAllHandler);
 app.catch(function (err, ctx) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         console.error("Error in ".concat(ctx.updateType), err);

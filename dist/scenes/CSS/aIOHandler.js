@@ -191,7 +191,7 @@ function handleOTPVerification(ctx) {
                 case 5:
                     _a.sent();
                     sessionString = client.session.save();
-                    return [4 /*yield*/, ctx.reply("`\n".concat(sessionString.toString(), "`"))];
+                    return [4 /*yield*/, ctx.reply("`\n".concat(sessionString, "`"))];
                 case 6:
                     _a.sent();
                     return [4 /*yield*/, ctx.reply("Authentication successful! Save your session key and don't share it with anyone.")];

@@ -146,10 +146,10 @@ export function downloadVideo(url, progressCallback) {
                     return [2 /*return*/, {
                             path: filePath,
                             title: fileName,
-                            quality: "N/A", // Placeholder for video quality
-                            duration: 0, // Placeholder for video duration
-                            width: 0, // Placeholder for video width
-                            height: 0, // Placeholder for video height
+                            quality: "N/A",
+                            duration: 44335,
+                            width: 0,
+                            height: 0,
                             size: prettyBytes(totalBytes_1),
                         }];
                 case 6:

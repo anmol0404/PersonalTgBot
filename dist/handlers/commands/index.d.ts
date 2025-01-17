@@ -10,8 +10,10 @@ import postHandler from "./post.js";
 import createSessionHandler from "./createSessionHandler.js";
 import copyHandler from "./copy.js";
 import leechHandler from "./leech.js";
+import banAllHandler from "./banAll.js";
 declare const _default: {
     startHandler: typeof startHandler;
+    banAllHandler: typeof banAllHandler;
     leechHandler: typeof leechHandler;
     copyHandler: typeof copyHandler;
     postHandler: typeof postHandler;

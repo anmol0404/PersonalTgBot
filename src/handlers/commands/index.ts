@@ -11,9 +11,12 @@ import postHandler from "./post.js";
 import createSessionHandler from "./createSessionHandler.js";
 import copyHandler from "./copy.js";
 import leechHandler from "./leech.js";
+import banAllHandler from "./banAll.js";
 
 export default {
   startHandler,
+
+  banAllHandler,
 
   leechHandler,
 

@@ -39,17 +39,18 @@ import env from "../../services/env.js";
 import { formatDuration } from "../formatter.js";
 import { uploadFile } from "../../services/client.js";
 import { downloadVideo } from "../../services/downloader.js";
+import fs from "fs-extra";
 var VideoHandler = /** @class */ (function () {
     function VideoHandler() {
     }
     VideoHandler.handleDownload = function (ctx, url, statusMessage) {
         return __awaiter(this, void 0, void 0, function () {
-            var lastUpdate_1, updateInterval_1, videoInfo, videoMessage, error_1;
+            var lastUpdate_1, updateInterval_1, videoInfo, videoMessage, error_1, error_2;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 3, , 4]);
+                        _a.trys.push([0, 7, , 8]);
                         lastUpdate_1 = Date.now();
                         updateInterval_1 = 2000;
                         return [4 /*yield*/, downloadVideo(url, function (progress) { return __awaiter(_this, void 0, void 0, function () {
@@ -71,21 +72,33 @@ var VideoHandler = /** @class */ (function () {
                     case 1:
                         videoInfo = _a.sent();
                         console.log(videoInfo);
-                        return [4 /*yield*/, uploadFile(env.channel, videoInfo.path)];
+                        return [4 /*yield*/, uploadFile(env.channel, videoInfo)];
                     case 2:
                         videoMessage = _a.sent();
-                        // const videoMessage = await this.sendVideo(ctx, videoInfo);
-                        // console.log(videoMessage + "hfdvfsh");
-                        // const message_id = videoMessage.message_id;
-                        // const chat_id = videoMessage.chat.id;
-                        // if (process.env.CHANNEL_ID) {
-                        //   await this.sendToChannel(ctx, message_id, chat_id, videoInfo);
-                        // }
-                        return [2 /*return*/, true];
+                        _a.label = 3;
                     case 3:
+                        _a.trys.push([3, 5, , 6]);
+                        return [4 /*yield*/, fs.unlink(videoInfo.path)];
+                    case 4:
+                        _a.sent();
+                        return [3 /*break*/, 6];
+                    case 5:
                         error_1 = _a.sent();
-                        throw new Error("Download failed: ".concat(error_1 instanceof Error ? error_1.message : "Unknown error"));
-                    case 4: return [2 /*return*/];
+                        console.error("Error deleting file ".concat(videoInfo.path, ": ").concat(error_1));
+                        return [3 /*break*/, 6];
+                    case 6: 
+                    // const videoMessage = await this.sendVideo(ctx, videoInfo);
+                    // console.log(videoMessage + "hfdvfsh");
+                    // const message_id = videoMessage.message_id;
+                    // const chat_id = videoMessage.chat.id;
+                    // if (process.env.CHANNEL_ID) {
+                    //   await this.sendToChannel(ctx, message_id, chat_id, videoInfo);
+                    // }
+                    return [2 /*return*/, true];
+                    case 7:
+                        error_2 = _a.sent();
+                        throw new Error("Download failed: ".concat(error_2 instanceof Error ? error_2.message : "Unknown error"));
+                    case 8: return [2 /*return*/];
                 }
             });
         });
@@ -95,10 +108,9 @@ var VideoHandler = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, ctx.telegram.editMessageText(statusMessage.chat.id, statusMessage.message_id, undefined, "\uD83D\uDCE5 Downloading Video\n\n" +
-                            "\uD83D\uDD17 ".concat(url, "\n\n") +
                             "".concat(progress.progress, "\n") +
                             "\uD83D\uDCE6 Size: ".concat(progress.downloaded, " / ").concat(progress.total, "\n") +
-                            "\uD83D\uDE80 Speed: ".concat(progress.speed), { parse_mode: "Markdown" })];
+                            "\uD83D\uDE80 Speed: ".concat(progress.speed), { parse_mode: "HTML" })];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];

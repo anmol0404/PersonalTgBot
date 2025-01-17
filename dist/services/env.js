@@ -14,6 +14,10 @@ var otherDomain = env.OTHER_DOMIAN || "";
 var apiId = env.API_ID || "";
 var apiHash = env.API_HASH || "";
 var session = env.SESSION_ID || "";
+// cloudinary
+var cloudName = env.CLOUD_NAME;
+var apiKey = env.API_KEY;
+var apiSecret = env.API_SECRET;
 var botUserName = env.BOT_USERNAME;
 var port = env.PORT || 8080;
 var forceChannelIds = ((_a = env.FORCE_CHANNEL_IDS) === null || _a === void 0 ? void 0 : _a.split(" ").map(Number)) || [];
@@ -21,6 +25,7 @@ var forceGroupIds = ((_b = env.FORCE_GROUP_IDS) === null || _b === void 0 ? void
 var allowGroups = ((_c = env.ALLOW_GROUPS) === null || _c === void 0 ? void 0 : _c.split(" ").map(Number)) || [];
 var adminIds = (_d = env.ADMIN_IDS) === null || _d === void 0 ? void 0 : _d.split(" ").map(Number);
 var databaseUrl = env.DATABASE_URL;
+var ownerId = Number(env.OWNER_ID) || "";
 var join = env.JOIN || "";
 var backup = env.BACKUP || "";
 var request = env.REQUEST || "";
@@ -40,6 +45,10 @@ if (!adminIds) {
     throw Error("Provide ADMIN_IDS");
 }
 export default {
+    cloudName: cloudName,
+    ownerId: ownerId,
+    apiKey: apiKey,
+    apiSecret: apiSecret,
     sortApiKey: sortApiKey,
     baseUrl: baseUrl,
     token: token,

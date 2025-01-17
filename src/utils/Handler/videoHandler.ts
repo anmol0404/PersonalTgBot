@@ -6,6 +6,7 @@ import { VideoInfo } from "../../types";
 import { formatDuration } from "../formatter.js";
 import { uploadFile } from "../../services/client.js";
 import { downloadVideo } from "../../services/downloader.js";
+import fs from "fs-extra";
 
 export class VideoHandler {
   static async handleDownload(
@@ -25,7 +26,13 @@ export class VideoHandler {
         }
       });
       console.log(videoInfo);
-      const videoMessage = await uploadFile(env.channel, videoInfo.path);
+      const videoMessage = await uploadFile(env.channel, videoInfo);
+      try {
+        await fs.unlink(videoInfo.path);
+      } catch (error) {
+        console.error(`Error deleting file ${videoInfo.path}: ${error}`);
+      }
+
       // const videoMessage = await this.sendVideo(ctx, videoInfo);
       // console.log(videoMessage + "hfdvfsh");
       // const message_id = videoMessage.message_id;
@@ -58,11 +65,10 @@ export class VideoHandler {
       statusMessage.message_id,
       undefined,
       `📥 Downloading Video\n\n` +
-        `🔗 ${url}\n\n` +
         `${progress.progress}\n` +
         `📦 Size: ${progress.downloaded} / ${progress.total}\n` +
         `🚀 Speed: ${progress.speed}`,
-      { parse_mode: "Markdown" }
+      { parse_mode: "HTML" }
     );
   }
 

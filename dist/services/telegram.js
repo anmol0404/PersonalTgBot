@@ -52,8 +52,14 @@ import { delay } from "../extra/delay.js";
 import { editAIOTitle } from "../utils/caption/editCaption.js";
 import { getMessageFromId } from "./client.js";
 var botTokens = env.botTokens;
+import { v2 as cloudinary } from "cloudinary";
 var Telegram = /** @class */ (function () {
     function Telegram() {
+        cloudinary.config({
+            cloud_name: env.cloudName,
+            api_key: env.apiKey,
+            api_secret: env.apiSecret,
+        });
         this.app = new Telegraf(env.token);
         this.messages = new Map();
         this.waitingMessageId = NaN;
