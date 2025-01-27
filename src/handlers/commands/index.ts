@@ -12,6 +12,7 @@ import createSessionHandler from "./createSessionHandler.js";
 import copyHandler from "./copy.js";
 import leechHandler from "./leech.js";
 import banAllHandler from "./banAll.js";
+import makeMsgJsonHandler from "./makeMsgJsonHandler.js";
 
 export default {
   startHandler,
@@ -37,6 +38,8 @@ export default {
   createSessionHandler,
 
   editAIOHandler,
+
+  makeMsgJsonHandler,
 
   helpHandler,
 };

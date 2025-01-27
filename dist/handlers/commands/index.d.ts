@@ -11,6 +11,7 @@ import createSessionHandler from "./createSessionHandler.js";
 import copyHandler from "./copy.js";
 import leechHandler from "./leech.js";
 import banAllHandler from "./banAll.js";
+import makeMsgJsonHandler from "./makeMsgJsonHandler.js";
 declare const _default: {
     startHandler: typeof startHandler;
     banAllHandler: typeof banAllHandler;
@@ -24,6 +25,7 @@ declare const _default: {
     addAIOHandler: typeof addAIOHandler;
     createSessionHandler: typeof createSessionHandler;
     editAIOHandler: typeof editAIOHandler;
+    makeMsgJsonHandler: typeof makeMsgJsonHandler;
     helpHandler: typeof helpHandler;
 };
 export default _default;
