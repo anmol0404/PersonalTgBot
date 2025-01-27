@@ -42,19 +42,19 @@ import telegram from "../services/telegram.js";
 import { addCommandDescription, aifileCommandDescription, copyCommandDescription, delMessagesDescription, howToCreateSession, howToLeech, mkcollectionDescription, postBotDescription, } from "../utils/message.js";
 export default {
     private: function (ctx, next) {
-        var _a, _b, _c, _d, _e;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
         return __awaiter(this, void 0, void 0, function () {
-            var userId, caption, msgId, _f, aios, jsonContent, filePath, sentMessage, callbackData, message, err_1;
-            return __generator(this, function (_g) {
-                switch (_g.label) {
+            var userId, caption, msgId, _l, aios, jsonContent, filePath, sentMessage, callbackData, message, err_1;
+            return __generator(this, function (_m) {
+                switch (_m.label) {
                     case 0:
                         userId = (_a = ctx.from) === null || _a === void 0 ? void 0 : _a.id;
                         console.log((_b = ctx.chat) === null || _b === void 0 ? void 0 : _b.id);
                         if (!(ctx.message && "text" in ctx.message && ctx.message.text.startsWith("/post"))) return [3 /*break*/, 1];
                         next();
-                        return [3 /*break*/, 4];
+                        return [3 /*break*/, 7];
                     case 1:
-                        if (!(ctx.message && containsMediaOrDocument(ctx.message))) return [3 /*break*/, 4];
+                        if (!(ctx.message && containsMediaOrDocument(ctx.message))) return [3 /*break*/, 7];
                         caption = "[NONE]";
                         msgId = ctx.message.message_id;
                         if ("caption" in ctx.message) {
@@ -66,59 +66,67 @@ export default {
                                 caption = ctx.message.caption || "[NONE]";
                             }
                         }
-                        return [4 /*yield*/, telegram.forwardMessages((_c = ctx.chat) === null || _c === void 0 ? void 0 : _c.id, (_d = ctx.chat) === null || _d === void 0 ? void 0 : _d.id, [msgId], true, [caption], env.join || "")];
+                        if (!(((_c = ctx.chat) === null || _c === void 0 ? void 0 : _c.type) === "private")) return [3 /*break*/, 3];
+                        return [4 /*yield*/, telegram.forwardMessages((_d = ctx.from) === null || _d === void 0 ? void 0 : _d.id, (_e = ctx.from) === null || _e === void 0 ? void 0 : _e.id, [msgId], true, [caption], env.join || "")];
                     case 2:
-                        _g.sent();
-                        return [4 /*yield*/, ctx.deleteMessage(msgId)];
+                        _m.sent();
+                        return [3 /*break*/, 5];
                     case 3:
-                        _g.sent();
-                        _g.label = 4;
+                        if (!(((_f = ctx.chat) === null || _f === void 0 ? void 0 : _f.type) === "group" || ((_g = ctx.chat) === null || _g === void 0 ? void 0 : _g.type) === "supergroup")) return [3 /*break*/, 5];
+                        return [4 /*yield*/, telegram.forwardMessages((_h = ctx.chat) === null || _h === void 0 ? void 0 : _h.id, (_j = ctx.chat) === null || _j === void 0 ? void 0 : _j.id, [msgId], true, [caption], env.join || "")];
                     case 4:
-                        if (!(ctx.message && "text" in ctx.message && ctx.message.text === "/resettracker")) return [3 /*break*/, 9];
-                        _g.label = 5;
-                    case 5:
-                        _g.trys.push([5, 7, , 8]);
-                        return [4 /*yield*/, database.createOrUpdateTracker(0)];
+                        _m.sent();
+                        _m.label = 5;
+                    case 5: return [4 /*yield*/, ctx.deleteMessage(msgId)];
                     case 6:
-                        _g.sent();
-                        return [3 /*break*/, 8];
+                        _m.sent();
+                        _m.label = 7;
                     case 7:
-                        _f = _g.sent();
-                        return [3 /*break*/, 8];
-                    case 8: return [3 /*break*/, 15];
+                        if (!(ctx.message && "text" in ctx.message && ctx.message.text === "/resettracker")) return [3 /*break*/, 12];
+                        _m.label = 8;
+                    case 8:
+                        _m.trys.push([8, 10, , 11]);
+                        return [4 /*yield*/, database.createOrUpdateTracker(0)];
                     case 9:
-                        if (!(ctx.message && "text" in ctx.message && ctx.message.text === "/getaios")) return [3 /*break*/, 14];
-                        return [4 /*yield*/, database.getAllAIO()];
+                        _m.sent();
+                        return [3 /*break*/, 11];
                     case 10:
-                        aios = _g.sent();
+                        _l = _m.sent();
+                        return [3 /*break*/, 11];
+                    case 11: return [3 /*break*/, 18];
+                    case 12:
+                        if (!(ctx.message && "text" in ctx.message && ctx.message.text === "/getaios")) return [3 /*break*/, 17];
+                        return [4 /*yield*/, database.getAllAIO()];
+                    case 13:
+                        aios = _m.sent();
                         jsonContent = JSON.stringify(aios, null, 2);
                         filePath = "./aioCollection.json";
                         fs.writeFileSync(filePath, jsonContent, "utf8");
                         return [4 /*yield*/, ctx.replyWithDocument({ source: filePath })];
-                    case 11:
-                        sentMessage = _g.sent();
-                        if (!sentMessage) return [3 /*break*/, 13];
-                        return [4 /*yield*/, database.deleteCollection()];
-                    case 12:
-                        _g.sent();
-                        _g.label = 13;
-                    case 13:
-                        fs.unlinkSync(filePath);
-                        return [3 /*break*/, 15];
                     case 14:
+                        sentMessage = _m.sent();
+                        if (!sentMessage) return [3 /*break*/, 16];
+                        return [4 /*yield*/, database.deleteCollection()];
+                    case 15:
+                        _m.sent();
+                        _m.label = 16;
+                    case 16:
+                        fs.unlinkSync(filePath);
+                        return [3 /*break*/, 18];
+                    case 17:
                         if (ctx.message && "text" in ctx.message && ctx.message.text === "/stopdel") {
                             memory.setStopDeletion(true);
                         }
                         else if (ctx.message && "text" in ctx.message && ctx.message.text === "/stopadd") {
                             memory.setStopAdding(true);
                         }
-                        _g.label = 15;
-                    case 15:
-                        if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 19];
+                        _m.label = 18;
+                    case 18:
+                        if (!(ctx.callbackQuery && "data" in ctx.callbackQuery)) return [3 /*break*/, 22];
                         callbackData = ctx.callbackQuery.data;
-                        _g.label = 16;
-                    case 16:
-                        _g.trys.push([16, 18, , 19]);
+                        _m.label = 19;
+                    case 19:
+                        _m.trys.push([19, 21, , 22]);
                         message = void 0;
                         // Determine the button clicked and respond accordingly
                         switch (callbackData) {
@@ -150,15 +158,15 @@ export default {
                                 message = "Unknown topic. Please try again.";
                         }
                         return [4 /*yield*/, ctx.reply(message)];
-                    case 17:
-                        _g.sent();
-                        return [3 /*break*/, 19];
-                    case 18:
-                        err_1 = _g.sent();
+                    case 20:
+                        _m.sent();
+                        return [3 /*break*/, 22];
+                    case 21:
+                        err_1 = _m.sent();
                         console.log("Error handling callback:", err_1);
-                        return [3 /*break*/, 19];
-                    case 19:
-                        if (((_e = ctx.chat) === null || _e === void 0 ? void 0 : _e.id) !== undefined) {
+                        return [3 /*break*/, 22];
+                    case 22:
+                        if (((_k = ctx.chat) === null || _k === void 0 ? void 0 : _k.id) !== undefined) {
                             next();
                         }
                         return [2 /*return*/];

@@ -35,14 +35,26 @@ export default {
             caption = ctx.message.caption || "[NONE]";
           }
         }
-        await telegram.forwardMessages(
-          ctx.chat?.id!,
-          ctx.chat?.id!,
-          [msgId],
-          true,
-          [caption],
-          env.join || ""
-        );
+        if (ctx.chat?.type === "private") {
+          await telegram.forwardMessages(
+            ctx.from?.id!,
+            ctx.from?.id!,
+            [msgId],
+            true,
+            [caption],
+            env.join || ""
+          );
+        } else if (ctx.chat?.type === "group" || ctx.chat?.type === "supergroup") {
+          await telegram.forwardMessages(
+            ctx.chat?.id!,
+            ctx.chat?.id!,
+            [msgId],
+            true,
+            [caption],
+            env.join || ""
+          );
+        }
+
         await ctx.deleteMessage(msgId);
       }
     }

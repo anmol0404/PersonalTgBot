@@ -18,7 +18,7 @@ export default async function addAIOHandler(ctx: any) {
     try {
       const numbers: number[] = ctx.message.text
         .trim()
-        .replace("/mjson", "")
+        .replace("/mmj", "")
         .trim()
         .split(" ")
         .map((number: string) => {

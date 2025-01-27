@@ -59,7 +59,7 @@ export default function addAIOHandler(ctx) {
                     _c.trys.push([3, 21, , 23]);
                     numbers = ctx.message.text
                         .trim()
-                        .replace("/mjson", "")
+                        .replace("/mmj", "")
                         .trim()
                         .split(" ")
                         .map(function (number) {
