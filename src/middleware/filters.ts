@@ -23,8 +23,6 @@ export default {
     console.log(ctx.chat?.id);
     if (ctx.message && "text" in ctx.message && ctx.message.text.startsWith("/post")) {
       next();
-    } else if (!auth.isAdmin(userId ? userId : 0)) {
-      return;
     } else {
       if (ctx.message && containsMediaOrDocument(ctx.message)) {
         let caption: string = "[NONE]";
